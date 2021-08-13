@@ -1,8 +1,8 @@
+
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
@@ -13,9 +13,6 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import accounting from 'accounting';
 
 import Tooltip from '@material-ui/core/Tooltip';
-import { actionTypes } from '../reducer';
-
-import { useStateValue } from '../StarteProvider';
 const useStyles = makeStyles({
     root: {
         maxWidth: 345,
@@ -34,8 +31,8 @@ const useStyles = makeStyles({
         padding: 0,
         color: "#25c16a"
     },
-    CardContent: {
-        textAlign: "left"
+    CardContent:{
+        textAlign:"left"
     },
     buttongroup: {
         position: "absolute",
@@ -45,16 +42,8 @@ const useStyles = makeStyles({
         fontSize: "13px",
         color: "#616161"
     },
-    tooltip: {
-        color: "#2f75bb"
-    },
-    cardactions: {
-        background: "#25c16a",
-
-        justifyContent: "center"
-    },
-    colorwhite: {
-        color: "#fff"
+    tooltip:{
+        color:"#2f75bb"
     }
 });
 // const useStylesBootstrap = makeStyles((theme) => ({
@@ -71,30 +60,8 @@ const useStyles = makeStyles({
 //     return <Tooltip arrow classes={classes} {...props} />;
 // }
 
-export default function Product({ product: { id, title, supplier, tax, price_real, image, thumbnail, description, units_sf, slug, category, subcategory, net_content, sellos } }) {
+export default function Product({ CheckoutCard: { id, title, supplier, tax, price_real, image, thumbnail, description, units_sf, slug, category, subcategory, net_content, sellos } }) {
     const classes = useStyles();
-    const [{ basket }, dispatch] = useStateValue();
-    const addToBasket = () => {
-        dispatch({
-            type: actionTypes.ADD_TO_BASKET,
-            item: {
-                id,
-                title,
-                supplier,
-                tax,
-                price_real,
-                image,
-                thumbnail,
-                description,
-                units_sf,
-                slug,
-                category,
-                subcategory,
-                net_content,
-                sellos
-            }
-        });
-    };
 
     return (
         <Card className={classes.root}>
@@ -110,7 +77,7 @@ export default function Product({ product: { id, title, supplier, tax, price_rea
                     >
                         {
                             sellos.map(sello => (
-                                <Tooltip title={sello.name} arrow className={classes.tooltip}>
+                                <Tooltip  title= {sello.name} arrow    className={classes.tooltip}>
                                     <Button style={{
 
                                         border: "none",
@@ -123,10 +90,10 @@ export default function Product({ product: { id, title, supplier, tax, price_rea
                     </ButtonGroup>
                 </CardMedia>
                 <CardContent className={classes.cardcontent} >
-                    <Typography gutterBottom variant="small" component="small">
+                    <Typography  gutterBottom variant="small" component="small">
                         <strong className={classes.subheader}>{supplier}</strong>
-
-                        <Chip className={classes.chipText}
+                        
+                    <Chip className={classes.chipText}
 
                             size="small"
                             label={net_content}
@@ -140,11 +107,7 @@ export default function Product({ product: { id, title, supplier, tax, price_rea
                     </Typography>
                 </CardContent>
             </CardActionArea>
-            <CardActions className={classes.cardactions} onClick={addToBasket}>
-                <Button size="small" className={classes.colorwhite} >
-                    Agregar al Carrito
-                </Button>
-            </CardActions>
+
         </Card>
     );
 }
