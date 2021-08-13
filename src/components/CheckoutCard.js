@@ -90,7 +90,7 @@ export default function Product({ CheckoutCard: { id, title, supplier, tax, pric
                     </ButtonGroup>
                 </CardMedia>
                 <CardContent className={classes.cardcontent} >
-                    <Typography  gutterBottom variant="small" component="small">
+                    <Typography  gutterBottom component="small">
                         <strong className={classes.subheader}>{supplier}</strong>
                         
                     <Chip className={classes.chipText}

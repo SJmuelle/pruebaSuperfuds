@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -17,45 +17,46 @@ import { actionTypes } from '../reducer';
 
 import { useStateValue } from '../StarteProvider';
 const useStyles = makeStyles({
-    root: {
-        maxWidth: 345,
-    },
-    media: {
-        height: 140,
-        width: "7em",
-        margin: "auto"
-    },
-    chipText: {
-        background: "#009e90",
-        color: "#fff",
-        marginLeft: "1em"
-    },
-    subheader: {
-        padding: 0,
-        color: "#25c16a"
-    },
-    CardContent: {
-        textAlign: "left"
-    },
-    buttongroup: {
-        position: "absolute",
-        right: "1em"
-    },
-    textunits: {
-        fontSize: "13px",
-        color: "#616161"
-    },
-    tooltip: {
-        color: "#2f75bb"
-    },
-    cardactions: {
-        background: "#25c16a",
+  root: {
+    maxWidth: 345,
+    boxShadow: '0 .125rem .25rem rgba(0,0,0,.075)!important',
+  },
+  media: {
+    height: 140,
+    width: '7em',
+    margin: 'auto',
+  },
+  chipText: {
+    background: '#009e90',
+    color: '#fff',
+    marginLeft: '1em',
+  },
+  subheader: {
+    padding: 0,
+    color: '#25c16a',
+  },
+  CardContent: {
+    textAlign: 'left',
+  },
+  buttongroup: {
+    position: 'absolute',
+    right: '1em',
+  },
+  textunits: {
+    fontSize: '13px',
+    color: '#616161',
+  },
+  tooltip: {
+    color: '#2f75bb',
+  },
+  cardactions: {
+    background: '#25c16a',
 
-        justifyContent: "center"
-    },
-    colorwhite: {
-        color: "#fff"
-    }
+    justifyContent: 'center',
+  },
+  colorwhite: {
+    color: '#fff',
+  },
 });
 // const useStylesBootstrap = makeStyles((theme) => ({
 //     arrow: {
@@ -71,80 +72,113 @@ const useStyles = makeStyles({
 //     return <Tooltip arrow classes={classes} {...props} />;
 // }
 
-export default function Product({ product: { id, title, supplier, tax, price_real, image, thumbnail, description, units_sf, slug, category, subcategory, net_content, sellos } }) {
-    const classes = useStyles();
-    const [{ basket }, dispatch] = useStateValue();
-    const addToBasket = () => {
-        dispatch({
-            type: actionTypes.ADD_TO_BASKET,
-            item: {
-                id,
-                title,
-                supplier,
-                tax,
-                price_real,
-                image,
-                thumbnail,
-                description,
-                units_sf,
-                slug,
-                category,
-                subcategory,
-                net_content,
-                sellos
-            }
-        });
-    };
+export default function Product({
+  product: {
+    id,
+    title,
+    supplier,
+    tax,
+    price_real,
+    image,
+    thumbnail,
+    description,
+    units_sf,
+    slug,
+    category,
+    subcategory,
+    net_content,
+    sellos,
+  },
+}) {
+  const classes = useStyles();
+  const [{ basket }, dispatch] = useStateValue();
+  const [hoverCard, setHoverCard] = useState(false);
 
-    return (
-        <Card className={classes.root}>
-            <CardActionArea>
-                <CardMedia
-                    className={classes.media}
-                    image={image}
+  const addToBasket = () => {
+    dispatch({
+      type: actionTypes.ADD_TO_BASKET,
+      item: {
+        id,
+        title,
+        supplier,
+        tax,
+        price_real,
+        image,
+        thumbnail,
+        description,
+        units_sf,
+        slug,
+        category,
+        subcategory,
+        net_content,
+        sellos,
+      },
+    });
+    console.log(basket);
+  };
+
+  return (
+    <Card
+      className={classes.root}
+      onMouseEnter={() => setHoverCard(true)}
+      onMouseLeave={() => setHoverCard(false)}
+    >
+      <CardActionArea>
+        <CardMedia className={classes.media} image={image}>
+          <ButtonGroup
+            orientation="vertical"
+            className={classes.buttongroup}
+            aria-label="vertical    group"
+          >
+            {sellos.map((sello, index) => (
+              <Tooltip
+                title={sello.name}
+                arrow
+                className={classes.tooltip}
+                key={index}
+              >
+                <Button
+                  style={{
+                    border: 'none',
+                    outline: 'none',
+                  }}
                 >
-                    <ButtonGroup
-                        orientation="vertical"
-                        className={classes.buttongroup}
-                        aria-label="vertical    group"
-                    >
-                        {
-                            sellos.map(sello => (
-                                <Tooltip title={sello.name} arrow className={classes.tooltip}>
-                                    <Button style={{
-
-                                        border: "none",
-                                        outline: "none"
-                                    }}> <img src={sello.image} alt="sellos" /></Button>
-                                </Tooltip >
-                            ))
-                        }
-
-                    </ButtonGroup>
-                </CardMedia>
-                <CardContent className={classes.cardcontent} >
-                    <Typography gutterBottom variant="small" component="small">
-                        <strong className={classes.subheader}>{supplier}</strong>
-
-                        <Chip className={classes.chipText}
-
-                            size="small"
-                            label={net_content}
-                        />
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="h6">
-                        <strong>{title.substr(0, 17)}...</strong>
-                    </Typography>
-                    <Typography variant="h5" >
-                        {accounting.formatMoney(price_real)} <small className={classes.textunits}> x {units_sf} {units_sf === 1 ? 'Unidad' : 'Unidades'}</small>
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
-            <CardActions className={classes.cardactions} onClick={addToBasket}>
-                <Button size="small" className={classes.colorwhite} >
-                    Agregar al Carrito
+                  {' '}
+                  <img src={sello.image} alt="sellos" />
                 </Button>
-            </CardActions>
-        </Card>
-    );
+              </Tooltip>
+            ))}
+          </ButtonGroup>
+        </CardMedia>
+        <CardContent className={classes.cardcontent}>
+          <Typography gutterBottom component="small">
+            <strong className={classes.subheader}>{supplier}</strong>
+
+            <Chip
+              className={classes.chipText}
+              size="small"
+              label={net_content}
+            />
+          </Typography>
+          <Typography gutterBottom style={{ fontSize: 16, lineHeight: 1 }}>
+            <strong>{title.substr(0, 17)}...</strong>
+          </Typography>
+          <Typography variant="h5">
+            {accounting.formatMoney(price_real)}{' '}
+            <small className={classes.textunits}>
+              {' '}
+              x {units_sf} {units_sf === 1 ? 'Unidad' : 'Unidades'}
+            </small>
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+      {hoverCard && (
+        <CardActions className={classes.cardactions} onClick={addToBasket}>
+          <Button size="small" className={classes.colorwhite}>
+            Agregar al Carrito
+          </Button>
+        </CardActions>
+      )}
+    </Card>
+  );
 }
