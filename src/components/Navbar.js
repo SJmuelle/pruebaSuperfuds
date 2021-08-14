@@ -1,36 +1,37 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import logo from '../assets/logo.png';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import InputBase from "@material-ui/core/InputBase";
+import Badge from "@material-ui/core/Badge";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import SearchIcon from "@material-ui/icons/Search";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import MoreIcon from "@material-ui/icons/MoreVert";
+import logo from "../assets/logo.png";
+import { Link } from "react-router-dom";
+import { DrawerCard } from "./DrawerCard";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginBottom: '1em',
-    boxShadow: '0 .5rem 1rem rgba(0,0,0,.15)!important',
+    marginBottom: "1em",
+    boxShadow: "0 .5rem 1rem rgba(0,0,0,.15)!important",
   },
 
   color: {
-    background: '#25C16A',
+    background: "#25C16A",
   },
 
   menuButton: {
     marginRight: theme.spacing(2),
   },
   title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
+    display: "none",
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
     },
   },
 
@@ -39,65 +40,65 @@ const useStyles = makeStyles((theme) => ({
   // },
   search: {
     // flexGrow: 1,
-    position: 'relative',
+    position: "relative",
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: '#fff',
-    color: '#111',
+    backgroundColor: "#fff",
+    color: "#111",
     marginRight: theme.spacing(2),
     marginLeft: 0,
     paddingLeft: theme.spacing(3),
-    width: '100%',
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
+    width: "100%",
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
     },
   },
   space: {
     flexGrow: 3,
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
     },
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    right: '1em',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: "100%",
+    position: "absolute",
+    right: "1em",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   inputRoot: {
-    color: 'inherit',
+    color: "inherit",
   },
   inputInput: {
     flexGrow: 3,
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     // paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '30ch',
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "30ch",
     },
   },
   sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
       flexGrow: 2,
     },
   },
   sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
+    display: "flex",
+    [theme.breakpoints.up("md")]: {
+      display: "none",
     },
   },
   imagenLogo: {
-    width: '100%',
+    width: "100%",
   },
 }));
 
@@ -105,6 +106,10 @@ export default function Navbar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+  const [drawerCard, setDrawerCard] = useState({
+    right: false,
+  });
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -126,14 +131,14 @@ export default function Navbar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const menuId = 'primary-search-account-menu';
+  const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
@@ -142,14 +147,14 @@ export default function Navbar() {
     </Menu>
   );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
+  const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={mobileMenuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
@@ -200,22 +205,21 @@ export default function Navbar() {
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
-              inputProps={{ 'aria-label': 'search' }}
+              inputProps={{ "aria-label": "search" }}
             />
           </div>
 
           <div className={classes.sectionDesktop}>
-            <Link to="/checkout-pages">
-              <IconButton
-                aria-label="show 17 new notifications"
-                color="inherit"
-              >
-                <Badge badgeContent={1} color="secondary">
-                  <ShoppingCartIcon />
-                </Badge>
-              </IconButton>
-            </Link>
-
+            <IconButton
+              aria-label="show 17 new notifications"
+              color="inherit"
+              onClick={() => setDrawerCard({ ...drawerCard, right: true })}
+            >
+              <Badge badgeContent={1} color="secondary">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
+            <DrawerCard drawerCard={drawerCard} setDrawerCard={setDrawerCard} />
             <IconButton
               edge="end"
               aria-label="account of current user"

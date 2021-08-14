@@ -87,7 +87,7 @@ export default function Product({
     category,
     subcategory,
     net_content,
-    sellos
+    sellos,
   },
 }) {
   const classes = useStyles();
@@ -111,7 +111,7 @@ export default function Product({
         category,
         subcategory,
         net_content,
-        sellos
+        sellos,
       },
     });
     console.log(basket);
