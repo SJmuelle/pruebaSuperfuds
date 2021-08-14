@@ -14,6 +14,9 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import { DrawerCard } from "./DrawerCard";
+
+
+import { useStateValue } from '../StarteProvider';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -106,7 +109,7 @@ export default function Navbar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+  const [{ basket }, dispatch] = useStateValue();
   const [drawerCard, setDrawerCard] = useState({
     right: false,
   });
@@ -215,7 +218,7 @@ export default function Navbar() {
               color="inherit"
               onClick={() => setDrawerCard({ ...drawerCard, right: true })}
             >
-              <Badge badgeContent={1} color="secondary">
+              <Badge badgeContent={basket.length} color="secondary">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>

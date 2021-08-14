@@ -2,7 +2,9 @@ import React from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
-
+import { useStateValue } from '../StarteProvider';
+import { actionTypes } from '../reducer';
+import accounting from 'accounting';
 import {
   Grid,
   Table,
@@ -116,23 +118,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const itemCart = ({ classes, producto = {} }) => {
+const itemCart = ({ classes, producto = {},removeItem }) => {
   return (
     <TableRow>
       <TableCell component="th" scope="row">
         <div className={classes.itemInfo}>
           <Typography className={classes.itemTitle}>
-            Super Kale Chips
+          {producto.title.substr(0, 17)}..
           </Typography>
           <Typography className={classes.itemSubTitle}>
-            x6 unids - 250 gr c/u
+          x {producto.units_sf} {producto.units_sf === 1 ? 'Unidad' : 'Unidades'}
           </Typography>
           <Typography className={clsx(classes.itemCateg, classes.colorPrimary)}>
-            SuperFuds
+          {producto.supplier}
           </Typography>
         </div>
       </TableCell>
-      <TableCell align="center">
+      {/* <TableCell align="center">
         <div className={classes.itemAddRmove}>
           <RemoveCircleOutlineRounded
             className={classes.addRemove}
@@ -144,13 +146,13 @@ const itemCart = ({ classes, producto = {} }) => {
           <span className={classes.itemCantidad}>{producto.cantidad || 0}</span>
           <AddCircleOutlineRounded className={classes.addRemove} />
         </div>
-      </TableCell>
+      </TableCell> */}
       <TableCell align="center">
         <Typography className={classes.itemTotal}>
-          <span className={classes.colorPrimary}>$</span>34.000
+           {accounting.formatMoney(producto?.price_real)}{' '}
         </Typography>
       </TableCell>
-      <TableCell align="center">
+      <TableCell align="center" onClick={()=>{removeItem(producto?.id)}}>
         <DeleteOutlineRounded />
       </TableCell>
     </TableRow>
@@ -159,7 +161,11 @@ const itemCart = ({ classes, producto = {} }) => {
 
 export const DrawerCard = ({ drawerCard, setDrawerCard }) => {
   const classes = useStyles();
-
+  const [{ basket }, dispatch] = useStateValue();
+  const removeItem =(id)=> dispatch({
+    type:actionTypes.REMOVE_ITEM,
+    id:id,
+  });
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -193,7 +199,7 @@ export const DrawerCard = ({ drawerCard, setDrawerCard }) => {
             Carrito de compras
           </Typography>
           <Typography className={classes.infoSubtitle}>
-            <spnat className={classes.colorPrimary}>3</spnat> item
+            <spnat className={classes.colorPrimary}>{basket.length}</spnat> item
           </Typography>
         </Grid>
 
@@ -203,13 +209,13 @@ export const DrawerCard = ({ drawerCard, setDrawerCard }) => {
               <TableHead>
                 <TableRow>
                   <TableCell>Item</TableCell>
-                  <TableCell align="center">Cantidad</TableCell>
+                  {/* <TableCell align="center">Cantidad</TableCell> */}
                   <TableCell align="center">Precio</TableCell>
                   <TableCell align="center"></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {[1, 1, 1, 1, 1, 1, 1, 1].map((prod) => itemCart({ classes }))}
+                {basket?.map((prod) => itemCart({ classes,producto:prod,removeItem }))}
               </TableBody>
             </Table>
           </TableContainer>
